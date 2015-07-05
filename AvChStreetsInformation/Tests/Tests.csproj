@@ -41,6 +41,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -59,6 +61,10 @@
     <ProjectReference Include="..\AvChStreetsInformation.DAL\AvChStreetsInformation.DAL.csproj">
       <Project>{c3551703-a0cd-4ffa-85ad-179788852c34}</Project>
       <Name>AvChStreetsInformation.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WikiCrawler\WikiCrawler.csproj">
+      <Project>{3b5cd833-6a0b-4476-9df3-fd21bb7839be}</Project>
+      <Name>WikiCrawler</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

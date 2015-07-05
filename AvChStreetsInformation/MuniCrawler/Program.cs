@@ -30,7 +30,8 @@ namespace MuniCrawler
             wc.Encoding = Encoding.UTF8;
             var html = wc.DownloadString(url);
             var obj = ParseData(html);
-
+            if (string.IsNullOrEmpty(obj.StreetName))
+                return;
             obj.Id = p;
             SaveData(obj);
         }

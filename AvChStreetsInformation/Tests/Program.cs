@@ -13,6 +13,9 @@ namespace Tests
     {
         static void Main(string[] args)
         {
+            WikiCrawler.Wikipedia w = new WikiCrawler.Wikipedia();
+            var desc = w.GetDescription("אברהם_אבן_עזרא");
+            /*
             Console.WriteLine("Enter street name:");
             var name = Console.ReadLine();
             Console.WriteLine("Enter details:");
@@ -30,7 +33,7 @@ namespace Tests
             st.StreetDesc = details;
             st.point = StreetsRepository.CreatePoint(double.Parse(langitu), double.Parse(longitu), 4326);
             sr.SetStreet(st);
-
+            */
         }
 
 
