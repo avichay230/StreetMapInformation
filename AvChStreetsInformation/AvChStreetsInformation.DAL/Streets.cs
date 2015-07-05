@@ -14,9 +14,16 @@ namespace AvChStreetsInformation.DAL
     
     public partial class Streets
     {
+        public Streets()
+        {
+            this.Categories = new HashSet<Categories>();
+        }
+    
         public int Id { get; set; }
         public string StreetName { get; set; }
         public string StreetDesc { get; set; }
         public System.Data.Entity.Spatial.DbGeography point { get; set; }
+    
+        public virtual ICollection<Categories> Categories { get; set; }
     }
 }

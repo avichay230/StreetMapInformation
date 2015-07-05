@@ -13,7 +13,16 @@ namespace AvChStreetsInformation.DAL.Repositories
         {
             using (var context = new Database1Entities())
             {
-                context.Streets.Add(street);
+                var st = context.Streets.Where(s => s.Id == street.Id).FirstOrDefault();
+                if (st == null)
+                {
+                    context.Streets.Add(street);
+                }
+                else
+                {
+                    st.StreetDesc = street.StreetDesc;
+                    st.StreetName = street.StreetName;
+                }
                 context.SaveChanges();
                 return street.Id;
             }

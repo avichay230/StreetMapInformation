@@ -5,40 +5,122 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="Database1Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="CategoryName" Type="varchar" MaxLength="550" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'F:\PROJECTS\AVCHSTREETSINFORMATION\AVCHSTREETSINFORMATION\AVCHSTREETSINFORMATION.DAL\DATABASE1.MDF.dbo.Street_Category' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Street_Category">
+          <Key>
+            <PropertyRef Name="StreetId" />
+            <PropertyRef Name="CategotyId" />
+          </Key>
+          <Property Name="StreetId" Type="int" Nullable="false" />
+          <Property Name="CategotyId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Streets">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="StreetName" Type="varchar" MaxLength="250" Nullable="false" />
           <Property Name="StreetDesc" Type="varchar(max)" Nullable="false" />
           <Property Name="point" Type="geography" />
         </EntityType>
+        <Association Name="FK_Street_Category_Categories">
+          <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
+          <End Role="Street_Category" Type="Self.Street_Category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="Street_Category">
+              <PropertyRef Name="CategotyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Street_Category_Streets">
+          <End Role="Streets" Type="Self.Streets" Multiplicity="1" />
+          <End Role="Street_Category" Type="Self.Street_Category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Streets">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Street_Category">
+              <PropertyRef Name="StreetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="Database1ModelStoreContainer">
+          <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Streets" EntityType="Self.Streets" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Street_Category" EntityType="Self.Street_Category" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Street_Category].[StreetId] AS [StreetId], 
+    [Street_Category].[CategotyId] AS [CategotyId]
+    FROM [dbo].[Street_Category] AS [Street_Category]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Street_Category_Categories" Association="Self.FK_Street_Category_Categories">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Street_Category" EntitySet="Street_Category" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Street_Category_Streets" Association="Self.FK_Street_Category_Streets">
+            <End Role="Streets" EntitySet="Streets" />
+            <End Role="Street_Category" EntitySet="Street_Category" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Database1Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="Database1Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Categories" EntityType="Database1Model.Categories" />
           <EntitySet Name="Streets" EntityType="Database1Model.Streets" />
+          <AssociationSet Name="Street_Category" Association="Database1Model.Street_Category">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Streets" EntitySet="Streets" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="CategoryName" Type="String" Nullable="false" MaxLength="550" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Streets" Relationship="Database1Model.Street_Category" FromRole="Categories" ToRole="Streets" />
+        </EntityType>
         <EntityType Name="Streets">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="Int32" Nullable="false" />
           <Property Name="StreetName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="StreetDesc" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="point" Type="Geography" />
+          <NavigationProperty Name="Categories" Relationship="Database1Model.Street_Category" FromRole="Streets" ToRole="Categories" />
         </EntityType>
+        <Association Name="Street_Category">
+          <End Type="Database1Model.Categories" Role="Categories" Multiplicity="*" />
+          <End Type="Database1Model.Streets" Role="Streets" Multiplicity="*" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="Database1ModelStoreContainer" CdmEntityContainer="Database1Entities">
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="Database1Model.Categories">
+              <MappingFragment StoreEntitySet="Categories">
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Streets">
             <EntityTypeMapping TypeName="Database1Model.Streets">
               <MappingFragment StoreEntitySet="Streets">
@@ -49,6 +131,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <AssociationSetMapping Name="Street_Category" TypeName="Database1Model.Street_Category" StoreEntitySet="Street_Category">
+            <EndProperty Name="Streets">
+              <ScalarProperty Name="Id" ColumnName="StreetId" />
+            </EndProperty>
+            <EndProperty Name="Categories">
+              <ScalarProperty Name="CategoryId" ColumnName="CategotyId" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

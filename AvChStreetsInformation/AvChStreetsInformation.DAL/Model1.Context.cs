@@ -25,6 +25,7 @@ namespace AvChStreetsInformation.DAL
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Categories> Categories { get; set; }
         public virtual DbSet<Streets> Streets { get; set; }
     }
 }

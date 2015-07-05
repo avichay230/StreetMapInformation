@@ -4,8 +4,10 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="e18c9eccb30c4354bc663ae408670323" Name="Diagram1" ZoomLevel="33">
-        <EntityTypeShape EntityType="Database1Model.Streets" Width="1.5" PointX="0.75" PointY="0.75" />
+      <Diagram DiagramId="e18c9eccb30c4354bc663ae408670323" Name="Diagram1" ZoomLevel="100">
+        <EntityTypeShape EntityType="Database1Model.Categories" Width="1.5" PointX="0.75" PointY="1.125" />
+        <EntityTypeShape EntityType="Database1Model.Streets" Width="1.5" PointX="3" PointY="0.875" />
+        <AssociationConnector Association="Database1Model.Street_Category" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
