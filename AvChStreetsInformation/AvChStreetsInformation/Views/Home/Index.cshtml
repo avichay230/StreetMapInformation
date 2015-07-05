@@ -1,0 +1,111 @@
+﻿@section headontent
+{
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&language=he-IL&key=AIzaSyAzGcO4aHUi5gx0bSRVPNuOFjCSofus6SY">
+    </script>
+    <script>
+        function GetGeocodeByRawAddress(addr) {
+            addr = addr.replace(" ", "+");
+            
+            var uri = "https://maps.googleapis.com/maps/api/geocode/json?address=" + addr + "&key=AIzaSyAzGcO4aHUi5gx0bSRVPNuOFjCSofus6SY";
+            $.getJSON(uri, function (data) {
+                console.log(data.results[0]);
+                jQuery('#FormattedName').text(data.results[0].formatted_address); //set the description
+                var lat = data.results[0].geometry.location.lat;
+                var lng = data.results[0].geometry.location.lng;
+                initialize(lat, lng);
+                $.get('https://www.jerusalem.muni.il/City/Streetnames/Pages/Street.aspx?streetSemel=5501', function (data) {
+                    
+                });
+                $('#PlaceDescription').text('https://www.jerusalem.muni.il/City/Streetnames/Pages/Street.aspx?streetSemel=5501');
+
+            });
+        }
+
+        function GetGeocodeByAddress(street, city, country)
+        {
+            street = street.replace(" ", "+");
+            city = city.replace(" ", "+");
+            country = country.replace(" ", "+");
+
+            var uri = "https://maps.googleapis.com/maps/api/geocode/json?address=" + street + "," + city + "," + country + "&key=AIzaSyAzGcO4aHUi5gx0bSRVPNuOFjCSofus6SY";
+            console.log(uri);   
+            $.getJSON(uri, function (data) {
+                return data;
+            });   
+        }
+    </script>
+    <script>
+        var _curLat;
+        var _curLng;
+        var _zoom = 12;
+    </script>
+    <script type="text/javascript">
+        
+        jQuery(document).ready(function () {
+            jQuery('#ShowInMap').click(function () {
+                var res = GetGeocodeByRawAddress($('#PlaceToShow').val());
+            });
+        });
+    </script>
+
+    <script>
+        function RemoveMarker()
+        {
+            //marker.setMap(null);
+        }
+
+        function initialize(lat, lng) {
+            _curLat = lat || _curLat;
+            _curLng = lng || _curLng;
+            
+            var CurrLatlng = new google.maps.LatLng(_curLat, _curLng );
+            var mapOptions = {
+                zoom: _zoom,
+                center: CurrLatlng
+            }
+            var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+            var marker = new google.maps.Marker({
+                position: CurrLatlng,
+                map: map,
+                draggable: true,
+                title: 'M'
+            });
+            map.setCenter(CurrLatlng);
+            marker.setMap(map); // To add the marker to the map, call setMap()
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            initialize(31.7685082, 35.1937668); //first JCE
+
+            $('#zoomlevel').on('change keyup paste', function () {
+                _zoom = parseInt($(this).val());
+                initialize();
+            });
+
+            $('#ShowInMap').click(function () {
+                initialize(25.7685082, 25.1937668);
+            });
+        });
+
+        
+    </script>
+}
+<div class="top">
+    <label for="zoomlevel">Zoom:</label>
+    <input type="number" id="zoomlevel" value="12" />
+
+    <label for="FormattedName">Formatted name:</label>
+    <span id="FormattedName"></span>
+
+</div>
+<div class="search">
+    <input type="text" id="PlaceToShow" style="width: 300px;" />
+    <input type="button" value="חפש" id="ShowInMap" />
+    <br /><br /><br />
+    <span id="PlaceDescription"></span>
+</div>
+
+<div id="map-canvas"></div>
+

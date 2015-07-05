@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avichay Chemed awesome project!</title>
+    @Scripts.Render("~/bundles/jquery")
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("headontent", required: false)
+    <style type="text/css">
+        body {
+            direction: rtl;
+        }
+
+        #map-canvas {
+            width: 100%;
+            height: 500px;
+        }
+
+        .search {
+            position: absolute;
+            top: 100px;
+            left: 200px;
+            z-index: 1000;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+
+    
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
