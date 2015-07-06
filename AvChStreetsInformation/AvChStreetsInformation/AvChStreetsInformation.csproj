@@ -118,6 +118,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InformationController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -161,6 +162,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\Information\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -173,6 +175,14 @@
     <ProjectReference Include="..\AvChStreetsInformation.DAL\AvChStreetsInformation.DAL.csproj">
       <Project>{c3551703-a0cd-4ffa-85ad-179788852c34}</Project>
       <Name>AvChStreetsInformation.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MuniCrawler\MuniCrawler.csproj">
+      <Project>{c05b8266-0f3e-4614-bdfb-f04ae92cc374}</Project>
+      <Name>MuniCrawler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WikiCrawler\WikiCrawler.csproj">
+      <Project>{3b5cd833-6a0b-4476-9df3-fd21bb7839be}</Project>
+      <Name>WikiCrawler</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

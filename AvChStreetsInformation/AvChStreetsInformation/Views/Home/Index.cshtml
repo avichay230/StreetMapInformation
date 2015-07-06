@@ -3,20 +3,38 @@
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&language=he-IL&key=AIzaSyAzGcO4aHUi5gx0bSRVPNuOFjCSofus6SY">
     </script>
     <script>
+        function GetCategories(stName)
+        {
+            var uri = "/Information/GetCategories/" + stName;
+            $.getJSON(uri, function (data) {
+                var t = "";
+                $.each(data, function (i, v) {
+                    
+                    t += ("<a target='_blank' href='https://he.wikipedia.org/wiki/" + v + "'</a>" + v + "</a><br />");
+                    
+                });
+                $('.categories').empty().html(t);
+                
+            });
+        }
+
+        function GetDescription(stName)
+        {
+            $('#PlaceDescription').text('https://www.jerusalem.muni.il/City/Streetnames/Pages/Street.aspx?streetSemel=5501');
+        }
+
         function GetGeocodeByRawAddress(addr) {
             addr = addr.replace(" ", "+");
             
             var uri = "https://maps.googleapis.com/maps/api/geocode/json?address=" + addr + "&key=AIzaSyAzGcO4aHUi5gx0bSRVPNuOFjCSofus6SY";
             $.getJSON(uri, function (data) {
-                console.log(data.results[0]);
+                console.log(data.results[05]);
                 jQuery('#FormattedName').text(data.results[0].formatted_address); //set the description
                 var lat = data.results[0].geometry.location.lat;
                 var lng = data.results[0].geometry.location.lng;
                 initialize(lat, lng);
-                $.get('https://www.jerusalem.muni.il/City/Streetnames/Pages/Street.aspx?streetSemel=5501', function (data) {
-                    
-                });
-                $('#PlaceDescription').text('https://www.jerusalem.muni.il/City/Streetnames/Pages/Street.aspx?streetSemel=5501');
+                
+                
 
             });
         }
@@ -39,11 +57,12 @@
         var _curLng;
         var _zoom = 12;
     </script>
-    <script type="text/javascript">
-        
+    <script type="text/javascript">        
         jQuery(document).ready(function () {
             jQuery('#ShowInMap').click(function () {
-                var res = GetGeocodeByRawAddress($('#PlaceToShow').val());
+                var term = $('#PlaceToShow').val();
+                var res = GetGeocodeByRawAddress(term);
+                GetCategories(term);
             });
         });
     </script>
@@ -83,10 +102,6 @@
                 _zoom = parseInt($(this).val());
                 initialize();
             });
-
-            $('#ShowInMap').click(function () {
-                initialize(25.7685082, 25.1937668);
-            });
         });
 
         
@@ -106,6 +121,7 @@
     <br /><br /><br />
     <span id="PlaceDescription"></span>
 </div>
+<div class="categories"></div>
 
 <div id="map-canvas"></div>
 
